@@ -8,6 +8,7 @@
   "paths": {
     "/register": {
       "post": {
+        "tags": ["bot-manager-service"],
         "summary": "Регистрация нового пользователя",
         "requestBody": {
           "required": true,
@@ -19,7 +20,39 @@
                   "user_name": { "type": "string" },
                   "email": { "type": "string", "format": "email" },
                   "org_name": { "type": "string" },
-                  "bot_name": { "type": "string" }
+                  "bot_name": { "type": "string" },
+                  "business_type": { "type": "string" },
+                  "business_type_other": { "type": "string" },
+                  "assistant_role": { "type": "string" },
+                  "assistant_role_other": { "type": "string" },
+                  "welcome_message": { "type": "string" },
+                  "role_context": { "type": "string" },
+                  "rules": { "type": "string" },
+                  "response_format": { "type": "string" },
+                  "examples": {"type": "string"},
+                  "error_handling": {"type": "string"},
+                  "humor_level": {"type": "integer"},
+                  "creativity": { "type": "number" },
+                  "contacts": {"type": "string"}
+                },
+                "example": {
+                  "user_name": "JohnDoe",
+                  "email": "johndoe@example.com",
+                  "org_name": "Example Corp",
+                  "bot_name": "ExampleBot",
+                  "business_type": "IT",
+                  "business_type_other": "",
+                  "assistant_role": "Support",
+                  "assistant_role_other": "",
+                  "welcome_message": "Welcome to ExampleBot!",
+                  "role_context": "Ты продаешь цифровые копии 1B",
+                  "rules": "Будь очень вежливым и терпеливым.",
+                  "response_format": "Отвечай в формате <Да Господин!>",
+                  "examples": "У вас есть 1С? Нет у нас только есть 1B. Извините.",
+                  "error_handling": "Извините, я не понял вопроса. Задайте его по-другому.",
+                  "humor_level": 2,
+                  "creativity": 0.5,
+                  "contacts": "Номер телефона: +3752342500, johndoe@example.com"
                 },
                 "required": ["user_name", "email", "org_name", "bot_name"]
               }
@@ -47,6 +80,7 @@
     },
     "/users/{user_id}": {
       "patch": {
+        "tags": ["bot-manager-service"],
         "summary": "Обновление пользователя",
         "parameters": [
           {
@@ -89,9 +123,10 @@
         }
       }
     },
-    "/bots/{bot_id}": {
+    "/bots/info/{bot_id}": {
       "patch": {
-        "summary": "Обновление данных бота",
+        "tags": ["bot-manager-service"],
+        "summary": "Обновление информации о личности бота",
         "parameters": [
           {
             "name": "bot_id",
@@ -132,6 +167,41 @@
           }
         }
       }
+    },
+    "/bots/integrations/{bot_id}": {
+      "patch": {
+        "tags": ["bot-manager-service"],
+        "summary": "Получение списка интеграций бота",
+        "parameters": [
+          {
+            "name": "bot_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список интеграций успешно получен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "integration_id": { "type": "integer" },
+                      "name": { "type": "string" },
+                      "type": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+  
     }
-  }
+ }
 }
