@@ -1,0 +1,137 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Assistant API",
+    "version": "1.0.0",
+    "description": "API для регистрации пользователей и управления ботами"
+  },
+  "paths": {
+    "/register": {
+      "post": {
+        "summary": "Регистрация нового пользователя",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "org_name": { "type": "string" },
+                  "bot_name": { "type": "string" }
+                },
+                "required": ["user_name", "email", "org_name", "bot_name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Пользователь успешно зарегистрирован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": { "type": "integer" },
+                    "org_id": { "type": "string" },
+                    "bot_id": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "patch": {
+        "summary": "Обновление пользователя",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "user_name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Пользователь обновлён",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": { "type": "integer" },
+                    "email": { "type": "string" },
+                    "user_name": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bots/{bot_id}": {
+      "patch": {
+        "summary": "Обновление данных бота",
+        "parameters": [
+          {
+            "name": "bot_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "is_enabled": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Бот обновлён",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bot_id": { "type": "integer" },
+                    "name": { "type": "string" },
+                    "is_enabled": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
